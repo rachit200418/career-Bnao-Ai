@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CareerMind AI — Your Intelligent Career Advisor</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/auth.css">
+<link rel="stylesheet" href="css/dashboard.css">
+<link rel="stylesheet" href="css/chat.css">
+</head>
+<body>
+
+<div class="page" id="loginPage">
+  <div class="auth-container">
+    <div class="logo">
+      <div class="logo-icon">🧠</div>
+      <h1>Career Bnao Ai</h1>
+      <p>Your intelligent career counseling companion</p>
+    </div>
+    <div class="card">
+      <h2>Welcome back</h2>
+      <p class="sub">Sign in to continue your career journey</p>
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="loginEmail" placeholder="you@example.com" required>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="loginPassword" placeholder="Enter your password" required>
+        </div>
+        <button type="submit" class="btn">Sign In →</button>
+      </form>
+      <div class="divider">or</div>
+      <div class="switch-link">
+        Don't have an account? <a onclick="showPage('registerPage')">Create one free</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page hidden" id="registerPage">
+  <div class="auth-container">
+    <div class="logo">
+      <div class="logo-icon">🧠</div>
+      <h1>Career Bnao Ai</h1>
+      <p>Start your personalized career journey</p>
+    </div>
+    <div class="card">
+      <h2>Create account</h2>
+      <p class="sub">Join thousands growing their careers with AI</p>
+      <form id="registerForm" onsubmit="handleRegister(event)">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="regName" placeholder="Your full name" required>
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="regEmail" placeholder="you@example.com" required>
+        </div>
+        <div class="form-group">
+          <label>Career Stage</label>
+          <select id="regStage">
+            <option value="">Select your stage...</option>
+            <option>Student / Fresh Graduate</option>
+            <option>Early Career (1-3 years)</option>
+            <option>Mid Career (3-10 years)</option>
+            <option>Senior / Leadership</option>
+            <option>Career Changer</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="regPassword" placeholder="Min 8 characters" required oninput="updateStrength(this.value)">
+          <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+        </div>
+        <button type="submit" class="btn">Create Account →</button>
+      </form>
+      <div class="switch-link">
+        Already have an account? <a onclick="showPage('loginPage')">Sign in</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="page hidden" id="dashboard">
+  <div class="dashboard-grid">
+
+    <!-- Topbar -->
+    <div class="topbar">
+      <div class="topbar-logo">
+        <div class="icon">🧠</div>
+        <span>Career Bnao Ai</span>
+      </div>
+      <div class="user-info">
+        <div class="avatar" id="userAvatar">U</div>
+        <span class="user-name" id="userNameDisplay">User</span>
+        <button class="logout-btn" onclick="handleLogout()">Log out</button>
+      </div>
+    </div>
+
+    
+    <div class="chat-area">
+
+    
+      <div class="sidebar">
+        <h3>Career Topics</h3>
+        <div class="career-topics">
+          <div class="topic-btn active" onclick="setTopic(this, 'general career advice')">
+            <span class="topic-icon">🎯</span> Career Planning
+          </div>
+          <div class="topic-btn" onclick="setTopic(this, 'resume writing and optimization')">
+            <span class="topic-icon">📄</span> Resume Building
+          </div>
+          <div class="topic-btn" onclick="setTopic(this, 'job interview preparation')">
+            <span class="topic-icon">🤝</span> Interview Prep
+          </div>
+          <div class="topic-btn" onclick="setTopic(this, 'salary negotiation strategies')">
+            <span class="topic-icon">💰</span> Salary Negotiation
+          </div>
+          <div class="topic-btn" onclick="setTopic(this, 'networking and LinkedIn strategies')">
+            <span class="topic-icon">🌐</span> Networking
+          </div>
+          <div class="topic-btn" onclick="setTopic(this, 'career change and pivot strategies')">
+            <span class="topic-icon">🔄</span> Career Change
+          </div>
+          <div class="topic-btn" onclick="setTopic(this, 'skill development and learning paths')">
+            <span class="topic-icon">📚</span> Skill Development
+          </div>
+          <div class="topic-btn" onclick="setTopic(this, 'leadership and management career growth')">
+            <span class="topic-icon">👑</span> Leadership Growth
+          </div>
+        </div>
+
+        <div class="api-key-section">
+          <label>🔑 Gemini API Key</label>
+          <input type="password" id="apiKeyInput" placeholder="AIza...">
+          <button class="save-btn" onclick="saveApiKey()">Save Key</button>
+          <p class="api-hint">Get free key at <a href="https://aistudio.google.com" target="_blank">aistudio.google.com</a></p>
+        </div>
+      </div>
+
+    
+      <div class="chat-main">
+        <div class="chat-header">
+          <div class="msg-avatar ai-avatar header-avatar">🧠</div>
+          <div>
+            <h2>Career Bnao AI Advisor</h2>
+            <div class="ai-indicator">
+              <div class="status-dot"></div>
+              <span class="status-text">Powered by Google Gemini </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="messages" id="messages">
+        
+        </div>
+
+        <div class="chat-input-area">
+          <div class="quick-prompts">
+            <div class="quick-prompt" onclick="sendSuggestion('What skills are most in demand in 2025?')">🔥 In-demand skills</div>
+            <div class="quick-prompt" onclick="sendSuggestion('Review my LinkedIn profile strategy')">💼 LinkedIn tips</div>
+            <div class="quick-prompt" onclick="sendSuggestion('How do I ask for a promotion?')">📈 Ask for promotion</div>
+            <div class="quick-prompt" onclick="sendSuggestion('Help me find my career strengths')">⚡ Find my strengths</div>
+          </div>
+          <div class="input-row">
+            <textarea class="msg-input" id="msgInput" placeholder="Ask your career question..." rows="1"
+              onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+            <button class="send-btn" id="sendBtn" onclick="sendMessage()">➤</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="js/auth.js"></script>
+<script src="js/chat.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
